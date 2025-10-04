@@ -3,30 +3,36 @@
 
 #include "GAS_Enemy.h"
 
+#include "AbilitySystemComponent.h"
+#include "UE_GAS_RPG/GAS/Attribute/GAS_AttributeSetBase.h"
 
-// Sets default values
+
 AGAS_Enemy::AGAS_Enemy()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	SetReplicates(true);
+	SetNetUpdateFrequency(100.0f);
+
+	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("ASC");
+	ASC->SetIsReplicated(true);
+	ASC->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+
+	AttributeSet = CreateDefaultSubobject<UGAS_AttributeSetBase>("AttributeSet");
 }
 
-// Called when the game starts or when spawned
+
 void AGAS_Enemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	InitAbilitySystemActorInfo();
 }
 
-// Called every frame
-void AGAS_Enemy::Tick(float DeltaTime)
+void AGAS_Enemy::InitAbilitySystemActorInfo()
 {
-	Super::Tick(DeltaTime);
+	Super::InitAbilitySystemActorInfo();
+
+	ASC->InitAbilityActorInfo(this, this);
 }
 
-// Called to bind functionality to input
-void AGAS_Enemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
+
 

@@ -12,17 +12,11 @@ class UE_GAS_RPG_API AGAS_Enemy : public AGAS_Character
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AGAS_Enemy();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void InitAbilitySystemActorInfo() override;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 };

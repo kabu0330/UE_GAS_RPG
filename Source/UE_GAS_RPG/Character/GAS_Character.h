@@ -4,25 +4,35 @@
 
 #include "CoreMinimal.h"
 #include "GAS_CharacterBase.h"
+#include "AbilitySystemInterface.h"
 #include "GAS_Character.generated.h"
 
+class UGAS_ComboActionData;
+class UAttributeSet;
+
 UCLASS()
-class UE_GAS_RPG_API AGAS_Character : public AGAS_CharacterBase
+class UE_GAS_RPG_API AGAS_Character : public AGAS_CharacterBase, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AGAS_Character();
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const;
+	virtual void InitAbilitySystemActorInfo() {}
+	
+	UGAS_ComboActionData* GetComboActionData() { return ComboActionData; }
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, Category = "GAS|Defalut")
+	TObjectPtr<UAbilitySystemComponent> ASC;
 
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
+
+	// 애니메이션
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation|Data")
+	TObjectPtr<UGAS_ComboActionData> ComboActionData;
+	
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };
